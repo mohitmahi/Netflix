@@ -26,6 +26,7 @@
 * Maven
 * Redis 
 * Vert.x toolkit for web app
-  * ![](../../Downloads/1_pLDxmoOkca6m-koBvn6-qg.webp)
+ * ![1_pLDxmoOkca6m-koBvn6-qg](https://github.com/mohitmahi/Netflix/assets/37902584/b5740693-653b-4044-9ecd-66c543df3d8a)
+
 ## Test
-  ![](../../Desktop/Screenshot 2023-11-12 at 15.38.14.png)
+<img width="571" alt="Screenshot 2023-11-12 at 15 38 14" src="https://github.com/mohitmahi/Netflix/assets/37902584/6ac5a524-7238-4004-bc88-c351a46d019f">
