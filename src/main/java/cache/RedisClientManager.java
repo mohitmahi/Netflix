@@ -15,11 +15,15 @@ import org.springframework.stereotype.Component;
 import utils.ApiPathUtil;
 import utils.CustomViewsUtil;
 
+import java.awt.event.ItemEvent;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static git.GitClientManager.GITHUB_EVENT_ADDRESS;
@@ -74,7 +78,6 @@ public class RedisClientManager extends AbstractVerticle {
                     if (message == null) {
                         System.out.println("Missing in cache, getting leaderboard ready in a moment");
                     } else {
-                        System.out.println("Redis smembers for Ranking");
                         final JsonArray array = new JsonArray(message.toString());
                         Arrays.stream(CustomViewsUtil.CUSTOM_VIEWS.values()).iterator().forEachRemaining(custom_views -> {
                             List<String> list = new ArrayList<>();
@@ -84,7 +87,6 @@ public class RedisClientManager extends AbstractVerticle {
                                 list.add(getLeaderBoardItem(jsonObject, custom_views).getScore());
                                 list.add(getLeaderBoardItem(jsonObject, custom_views).getKey());
                             }
-                            System.out.println("Adding to LB:: " + list);
                             redisAPI.zadd(list)
                                     .onFailure(t -> {
                                         System.out.println("Redis refresh zadd Response failed " + t);
@@ -215,12 +217,52 @@ public class RedisClientManager extends AbstractVerticle {
                         if (message == null || message.toString().equals("[]")) {
                             msg.reply("leader board not yet ready");
                         } else {
-                            System.out.println("Redis zrange Response:: " + message);
                             List<LeaderBoardOutputItem> outputItemList = getAsList(views.setName, message);
-                            //sorted twice 1) by score (desc), 2) by Repo Full name
-                            outputItemList.sort(Comparator.comparing(LeaderBoardOutputItem::getScore)
-                                    .thenComparing(Comparator.comparing(LeaderBoardOutputItem::getRepoFullName).reversed()));
-                            msg.reply(outputItemList.toString());
+
+                            if (outputItemList.size() <= 1 || views.setName.equals(last_updated.setName)) {
+                                outputItemList.sort(Comparator.comparing(LeaderBoardOutputItem::getScore)
+                                        .thenComparing(LeaderBoardOutputItem::getRepoFullName));
+                                msg.reply(outputItemList.toString());
+                            }
+                            else {
+                                String bottomN_HighestRank = String.valueOf(outputItemList.get(outputItemList.size() - 1).getScore());
+                                Set<Integer> scoreSet = new HashSet<>();
+                                outputItemList.forEach(item -> {
+                                    scoreSet.add(item.getScore());
+                                });
+
+                                redisAPI
+                                        .zrangebyscore(List.of(views.setName, bottomN_HighestRank, bottomN_HighestRank, "WITHSCORES"))
+                                        .onFailure(t -> System.out.println("Redis zrange Response failed " + t))
+                                        .onSuccess(secondMessage -> {
+                                            if (secondMessage == null || secondMessage.toString().equals("[]")) {
+                                                msg.reply("leader board not yet ready");
+                                            } else {
+                                                List<LeaderBoardOutputItem> outputItemList2 = getAsList(views.setName, secondMessage);
+                                                if (scoreSet.size() == 1) {
+                                                    outputItemList2.sort(Comparator.comparing(LeaderBoardOutputItem::getRepoFullName).reversed());
+                                                    List<LeaderBoardOutputItem> finalList = outputItemList2.subList(0, bottomN);
+                                                    Collections.reverse(finalList);
+                                                    msg.reply(finalList.toString());
+                                                } else {
+                                                    outputItemList2.sort(Comparator.comparing(LeaderBoardOutputItem::getRepoFullName).reversed());
+                                                    int totalRemoved = 0;
+                                                    for (int i = outputItemList.size() - 1; i >= 0; i--) {
+                                                        if (outputItemList.get(i).getScore() == Integer.parseInt(bottomN_HighestRank)) {
+                                                            outputItemList.remove(i);
+                                                            totalRemoved++;
+                                                        }
+                                                    }
+                                                    //sorted twice 1) by score (desc), 2) by Repo Full name (asc)
+                                                    outputItemList.sort(Comparator.comparing(LeaderBoardOutputItem::getScore)
+                                                            .thenComparing(LeaderBoardOutputItem::getRepoFullName));
+                                                    List<LeaderBoardOutputItem> outputItemList1 = outputItemList2.subList(0, totalRemoved);
+                                                    outputItemList1.addAll(outputItemList);
+                                                    msg.reply(outputItemList1.toString());
+                                                }
+                                            }
+                                        });
+                            }
                         }
                     });
 

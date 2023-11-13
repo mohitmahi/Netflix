@@ -48,7 +48,7 @@ public class GitClientManager extends AbstractVerticle {
         retriever.getConfig().onComplete(config -> apiToken = config.succeeded()
                 && config.result() != null
                 && !config.result().getString(GITHUB_API_TOKEN).isBlank() ?
-                config.result().getString(GITHUB_API_TOKEN) : "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");
+                config.result().getString(GITHUB_API_TOKEN) : "");
         vertx.eventBus().<String>consumer(GITHUB_EVENT_ADDRESS).handler(handleGitAPIRequest());
         WebClientOptions options = new WebClientOptions()
                 .setUserAgent("Cache-App/1");
@@ -71,22 +71,16 @@ public class GitClientManager extends AbstractVerticle {
                             String[] pageSplit = link.get().split(",");
                             for (String nextPage : pageSplit) {
                                 if (nextPage.contains("next")) {
-                                    System.out.println("Next Page link found " + nextPage);
                                     final String nextPageURL = nextPage.split(">")[0].substring(1);
                                     String validURL = nextPageURL.replace("<", "");
                                     final String path = validURL.substring(22).trim();
                                     vertx.eventBus().request(CACHED_PAGINATED_GET, path, result -> {
                                         if (result.succeeded()) {
                                             System.out.println("Next Page call succeeded for " + path + " :: " + result.succeeded());
-                                        } else {
-                                            System.out.println("Next Page call fauiled for " + path + " :: " + result.cause());
                                         }
                                     });
                                 }
                             }
-                            System.out.println("Received a paged response with status code " + msg.body() + " :: " + response.statusCode() + " link " + link);
-                        } else {
-                            System.out.println("Received all response with status code " + msg.body() + " :: " + response.statusCode());
                         }
                         msg.reply(response.bodyAsString());
                     })
