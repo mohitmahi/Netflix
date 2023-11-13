@@ -28,5 +28,5 @@
 * Vert.x toolkit for web app
  * ![1_pLDxmoOkca6m-koBvn6-qg](https://github.com/mohitmahi/Netflix/assets/37902584/b5740693-653b-4044-9ecd-66c543df3d8a)
 
-## Test
-<img width="571" alt="Screenshot 2023-11-12 at 15 38 14" src="https://github.com/mohitmahi/Netflix/assets/37902584/6ac5a524-7238-4004-bc88-c351a46d019f">
+## Test (86%)
+![Screenshot 2023-11-13 at 04 51 44](https://github.com/mohitmahi/Netflix/assets/37902584/78d3002b-dfe2-40d7-8282-c4975473957f)
