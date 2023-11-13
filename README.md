@@ -1,4 +1,6 @@
 # Netflix API Read Cache
+This is a spring boot applicable using Maven build. It's build using Vert.x (NIO) took kit to get advantage of high throughout w/o any blocking operation overhead. This service uses Redis as local cache to keep all paginated response in a flat structure (Set) and generate a leader board for Bottom N query. For some API request it simply works as Proxy to Git API, while it also provide its own flavor of custom views API on top of all cached Netflix repo info. 
+
 * Environment Variable
   * APP_PORT (default 8080)
   * GITHUB_API_TOKEN (default empty)
