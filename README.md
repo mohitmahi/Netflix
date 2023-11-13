@@ -5,19 +5,19 @@
 
 
 ## API Path
-####1) Local Cached in Redis (periodic refresh)
+#### 1) Local Cached in Redis (periodic refresh)
    * /
    * /orgs/Netflix
    * /orgs/Netflix/members
    * /orgs/Netflix/repos
-####2) Custom View in Redis (sorted set)
+#### 2) Custom View in Redis (sorted set)
    * /view/bottom/:N/forks
    * /view/bottom/:N/open_issues
    * /view/bottom/:N/stars
    * /view/bottom/:N/last_updated
-####3) Proxy for any https://api.github.com/ path
+#### 3) Proxy for any https://api.github.com/ path
    * All except above 1) and 2)
-####4) Health Check
+#### 4) Health Check
    * /healthcheck
 
 
