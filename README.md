@@ -30,3 +30,10 @@
 
 ## Test (86%)
 ![Screenshot 2023-11-13 at 04 51 44](https://github.com/mohitmahi/Netflix/assets/37902584/78d3002b-dfe2-40d7-8282-c4975473957f)
+## Failing Test 
+## -n test-06-07: /view/bottom/5/stars = 
+* https://github.com/Netflix/iceberg-python now have 1 star count, so test expected output is incorrect. 
+failed
+>>   expected=[["Netflix/dgs-examples-kotlin-2.7",0],["Netflix/iceberg-python",0],["Netflix/octodns-ns1",0],["Netflix/octodns-route53",0],["Netflix/virtual-kubelet",0]]
+
+  >> response=[["Netflix/octodns-ultra",1],["Netflix/dgs-examples-kotlin-2.7",0],["Netflix/octodns-ns1",0],["Netflix/octodns-route53",0],["Netflix/virtual-kubelet",0]]
