@@ -4,6 +4,8 @@ This is a spring boot applicable using Maven build. It's build using Vert.x (NIO
 * Environment Variable
   * APP_PORT (default 8080)
   * GITHUB_API_TOKEN (default empty)
+  
+![Screenshot 2023-11-13 at 23 07 04](https://github.com/mohitmahi/Netflix/assets/37902584/8c1f2aad-0d4c-4f5c-943a-5bacf15fbd89)
 
 
 ## API Path
