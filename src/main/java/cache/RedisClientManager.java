@@ -220,8 +220,7 @@ public class RedisClientManager extends AbstractVerticle {
                             List<LeaderBoardOutputItem> outputItemList = getAsList(views.setName, message);
 
                             if (outputItemList.size() <= 1 || views.setName.equals(last_updated.setName)) {
-                                outputItemList.sort(Comparator.comparing(LeaderBoardOutputItem::getScore)
-                                        .thenComparing(LeaderBoardOutputItem::getRepoFullName));
+                                Collections.reverse(outputItemList); //reverse botton N in decreasing order
                                 msg.reply(outputItemList.toString());
                             }
                             else {
