@@ -35,8 +35,10 @@ This is a spring boot applicable using Maven build. It's build using Vert.x (NIO
 
 
 ## Test (86%)
-![Screenshot 2023-11-13 at 04 51 44](https://github.com/mohitmahi/Netflix/assets/37902584/78d3002b-dfe2-40d7-8282-c4975473957f)
-## Failing Test 
+<img width="1891" alt="Screenshot 2023-11-13 at 22 34 42" src="https://github.com/mohitmahi/Netflix/assets/37902584/bec9ce7f-3388-4c82-bfa7-12319512af10">
+
+## 2 Failing Test for bottom/N/stars
+
 *  https://github.com/Netflix/iceberg-python now have 1 star count, so below test expected output are incorrect. 
 ## -n test-06-07: /view/bottom/5/stars = 
 failed
@@ -49,3 +51,7 @@ failed
 >>   expected=[["Netflix/conductor-docs",1],["Netflix/dgs-examples-java.latest",1],["Netflix/eclipse-mat",1],["Netflix/octodns",1],["Netflix/octodns-ultra",1],["Netflix/dgs-examples-kotlin-2.7",0],["Netflix/iceberg-python",0],["Netflix/octodns-ns1",0],["Netflix/octodns-route53",0],["Netflix/virtual-kubelet",0]]
 
 >>   response=[["Netflix/octodns-ultra",1],["Netflix/octodns",1],["Netflix/iceberg-python",1],["Netflix/eclipse-mat",1],["Netflix/dgs-examples-java.latest",1],["Netflix/conductor-docs",1],["Netflix/dgs-examples-kotlin-2.7",0],["Netflix/octodns-ns1",0],["Netflix/octodns-route53",0],["Netflix/virtual-kubelet",0]]
+
+## 2 Failing Test for bottom/N/last_updated
+* https://github.com/Netflix/mantis-api last updated in expected response is invalid so test are failing. 
+
